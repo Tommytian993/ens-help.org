@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ENS 患者论坛 - 交流与分享</title>
+    <link rel="stylesheet" href="css/forum.css" />
+  </head>
+  <body>
+    <div class="header">
+      <h1>💬 ENS 患者论坛</h1>
+      <p>分享经验，互相支持，共同面对 ENS</p>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">🗺️ 诊所地图</a>
+        <a href="memorial.html" class="nav-link">🕯️ 纪念园</a>
+        <a href="health-log.html" class="nav-link">📊 健康日志</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- 论坛统计 -->
+      <div class="forum-stats">
+        <div class="stat-card">
+          <div class="stat-number" id="totalPosts">156</div>
+          <div class="stat-label">总帖子数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="totalUsers">89</div>
+          <div class="stat-label">注册用户</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="onlineUsers">12</div>
+          <div class="stat-label">在线用户</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="todayPosts">8</div>
+          <div class="stat-label">今日新帖</div>
+        </div>
+      </div>
+
+      <!-- 快速操作 -->
+      <div class="quick-actions">
+        <button class="btn btn-primary" id="newPostBtn">✍️ 发布新帖</button>
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="搜索帖子、用户或关键词..."
+          />
+          <button class="btn btn-secondary" id="searchBtn">🔍</button>
+        </div>
+      </div>
+
+      <!-- 分类导航 -->
+      <div class="category-nav">
+        <button class="category-btn active" data-category="all">全部</button>
+        <button class="category-btn" data-category="treatment">治疗经验</button>
+        <button class="category-btn" data-category="symptoms">症状讨论</button>
+        <button class="category-btn" data-category="support">情感支持</button>
+        <button class="category-btn" data-category="qa">问答求助</button>
+        <button class="category-btn" data-category="news">最新资讯</button>
+      </div>
+
+      <!-- 帖子列表 -->
+      <div class="posts-container">
+        <div class="posts-list" id="postsList">
+          <!-- 帖子将通过 JavaScript 动态生成 -->
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="pagination">
+        <button class="page-btn" id="prevPage">← 上一页</button>
+        <div class="page-numbers" id="pageNumbers">
+          <span class="page-number active">1</span>
+          <span class="page-number">2</span>
+          <span class="page-number">3</span>
+        </div>
+        <button class="page-btn" id="nextPage">下一页 →</button>
+      </div>
+    </div>
+
+    <!-- 发布新帖模态框 -->
+    <div id="newPostModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>发布新帖</h2>
+          <span class="close">&times;</span>
+        </div>
+        <form id="newPostForm">
+          <div class="form-group">
+            <label for="postTitle">标题 *</label>
+            <input
+              type="text"
+              id="postTitle"
+              name="title"
+              required
+              placeholder="请输入帖子标题..."
+            />
+          </div>
+          <div class="form-group">
+            <label for="postCategory">分类 *</label>
+            <select id="postCategory" name="category" required>
+              <option value="">请选择分类</option>
+              <option value="treatment">治疗经验</option>
+              <option value="symptoms">症状讨论</option>
+              <option value="support">情感支持</option>
+              <option value="qa">问答求助</option>
+              <option value="news">最新资讯</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="postContent">内容 *</label>
+            <textarea
+              id="postContent"
+              name="content"
+              required
+              placeholder="分享你的经验、问题或想法..."
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="postTags">标签（用逗号分隔）</label>
+            <input
+              type="text"
+              id="postTags"
+              name="tags"
+              placeholder="例如：手术,保守治疗,鼻塞"
+            />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancelPostBtn">
+              取消
+            </button>
+            <button type="submit" class="btn btn-primary">发布帖子</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 帖子详情模态框 -->
+    <div id="postDetailModal" class="modal">
+      <div class="modal-content large">
+        <div class="modal-header">
+          <h2 id="postDetailTitle">帖子详情</h2>
+          <span class="close">&times;</span>
+        </div>
+        <div class="post-detail" id="postDetailContent">
+          <!-- 帖子详情内容 -->
+        </div>
+      </div>
+    </div>
+
+    <script src="js/forum.js"></script>
+  </body>
+</html>

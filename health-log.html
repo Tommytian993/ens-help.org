@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ENS 健康日志 - 症状记录与跟踪</title>
+    <link rel="stylesheet" href="css/health-log.css" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <h1>📊 ENS 健康日志</h1>
+      <p>记录症状变化，跟踪治疗效果，管理健康数据</p>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">🗺️ 诊所地图</a>
+        <a href="memorial.html" class="nav-link">🕯️ 纪念园</a>
+        <a href="forum.html" class="nav-link">💬 患者论坛</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- 快速统计 -->
+      <div class="quick-stats">
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-info">
+            <div class="stat-number" id="totalDays">0</div>
+            <div class="stat-label">记录天数</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">😷</div>
+          <div class="stat-info">
+            <div class="stat-number" id="avgSeverity">0</div>
+            <div class="stat-label">平均严重程度</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💊</div>
+          <div class="stat-info">
+            <div class="stat-number" id="medicationDays">0</div>
+            <div class="stat-label">用药天数</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📈</div>
+          <div class="stat-info">
+            <div class="stat-number" id="improvementRate">0%</div>
+            <div class="stat-label">改善率</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 操作面板 -->
+      <div class="action-panel">
+        <button class="btn btn-primary" id="addLogBtn">➕ 添加记录</button>
+        <div class="view-controls">
+          <button class="btn btn-secondary active" id="listViewBtn">
+            📋 列表视图
+          </button>
+          <button class="btn btn-secondary" id="chartViewBtn">
+            📊 图表视图
+          </button>
+        </div>
+      </div>
+
+      <!-- 筛选和搜索 -->
+      <div class="filter-panel">
+        <div class="date-range">
+          <label>时间范围：</label>
+          <input type="date" id="startDate" />
+          <span>至</span>
+          <input type="date" id="endDate" />
+          <button class="btn btn-secondary" id="applyFilterBtn">应用</button>
+        </div>
+        <div class="symptom-filter">
+          <label>症状筛选：</label>
+          <select id="symptomFilter">
+            <option value="">全部症状</option>
+            <option value="鼻塞">鼻塞</option>
+            <option value="鼻干">鼻干</option>
+            <option value="头痛">头痛</option>
+            <option value="失眠">失眠</option>
+            <option value="焦虑">焦虑</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 内容区域 -->
+      <div class="content-area">
+        <!-- 列表视图 -->
+        <div id="listView" class="view-content active">
+          <div class="logs-list" id="logsList">
+            <!-- 日志记录将通过 JavaScript 动态生成 -->
+          </div>
+        </div>
+
+        <!-- 图表视图 -->
+        <div id="chartView" class="view-content">
+          <div class="charts-container">
+            <div class="chart-card">
+              <h3>症状严重程度趋势</h3>
+              <div id="severityChart" class="chart"></div>
+            </div>
+            <div class="chart-card">
+              <h3>症状分布</h3>
+              <div id="symptomsChart" class="chart"></div>
+            </div>
+            <div class="chart-card">
+              <h3>用药记录</h3>
+              <div id="medicationChart" class="chart"></div>
+            </div>
+            <div class="chart-card">
+              <h3>睡眠质量</h3>
+              <div id="sleepChart" class="chart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 添加记录模态框 -->
+    <div id="addLogModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>添加健康记录</h2>
+          <span class="close">&times;</span>
+        </div>
+        <form id="addLogForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="logDate">日期 *</label>
+              <input type="date" id="logDate" name="date" required />
+            </div>
+            <div class="form-group">
+              <label for="logTime">时间</label>
+              <input type="time" id="logTime" name="time" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>症状严重程度 *</label>
+            <div class="severity-scale">
+              <div class="scale-item">
+                <input
+                  type="radio"
+                  id="severity1"
+                  name="severity"
+                  value="1"
+                  required
+                />
+                <label for="severity1">1 - 轻微</label>
+              </div>
+              <div class="scale-item">
+                <input type="radio" id="severity2" name="severity" value="2" />
+                <label for="severity2">2 - 轻度</label>
+              </div>
+              <div class="scale-item">
+                <input type="radio" id="severity3" name="severity" value="3" />
+                <label for="severity3">3 - 中度</label>
+              </div>
+              <div class="scale-item">
+                <input type="radio" id="severity4" name="severity" value="4" />
+                <label for="severity4">4 - 重度</label>
+              </div>
+              <div class="scale-item">
+                <input type="radio" id="severity5" name="severity" value="5" />
+                <label for="severity5">5 - 极重</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>主要症状 *</label>
+            <div class="symptoms-grid">
+              <div class="symptom-item">
+                <input
+                  type="checkbox"
+                  id="symptom1"
+                  name="symptoms"
+                  value="鼻塞"
+                />
+                <label for="symptom1">鼻塞</label>
+              </div>
+              <div class="symptom-item">
+                <input
+                  type="checkbox"
+                  id="symptom2"
+                  name="symptoms"
+                  value="鼻干"
+                />
+                <label for="symptom2">鼻干</label>
+              </div>
+              <div class="symptom-item">
+                <input
+                  type="checkbox"
+                  id="symptom3"
+                  name="symptoms"
+                  value="头痛"
+                />
+                <label for="symptom3">头痛</label>
+              </div>
+              <div class="symptom-item">
+                <input
+                  type="checkbox"
+                  id="symptom4"
+                  name="symptoms"
+                  value="失眠"
+                />
+                <label for="symptom4">失眠</label>
+              </div>
+              <div class="symptom-item">
+                <input
+                  type="checkbox"
+                  id="symptom5"
+                  name="symptoms"
+                  value="焦虑"
+                />
+                <label for="symptom5">焦虑</label>
+              </div>
+              <div class="symptom-item">
+                <input
+                  type="checkbox"
+                  id="symptom6"
+                  name="symptoms"
+                  value="疲劳"
+                />
+                <label for="symptom6">疲劳</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="medication">用药情况</label>
+            <input
+              type="text"
+              id="medication"
+              name="medication"
+              placeholder="如：布地奈德鼻喷剂 2次/日"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="sleepQuality">睡眠质量 (1-10分)</label>
+            <input
+              type="range"
+              id="sleepQuality"
+              name="sleepQuality"
+              min="1"
+              max="10"
+              value="5"
+            />
+            <div class="range-labels">
+              <span>很差</span>
+              <span id="sleepValue">5</span>
+              <span>很好</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="mood">情绪状态 (1-10分)</label>
+            <input
+              type="range"
+              id="mood"
+              name="mood"
+              min="1"
+              max="10"
+              value="5"
+            />
+            <div class="range-labels">
+              <span>很差</span>
+              <span id="moodValue">5</span>
+              <span>很好</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">备注</label>
+            <textarea
+              id="notes"
+              name="notes"
+              placeholder="记录其他重要信息..."
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancelLogBtn">
+              取消
+            </button>
+            <button type="submit" class="btn btn-primary">保存记录</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/health-log.js"></script>
+  </body>
+</html>
+
+
