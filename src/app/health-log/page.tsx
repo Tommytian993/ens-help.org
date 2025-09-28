@@ -24,6 +24,13 @@ interface HealthLog {
   notes: string;
 }
 
+interface ChartsState {
+  severity: any;
+  symptoms: any;
+  medication: any;
+  sleep: any;
+}
+
 export default function HealthLogPage() {
   const [logs, setLogs] = useState<HealthLog[]>([
     {
@@ -78,7 +85,7 @@ export default function HealthLogPage() {
     notes: "",
   });
 
-  const [charts, setCharts] = useState({
+  const [charts, setCharts] = useState<ChartsState>({
     severity: null,
     symptoms: null,
     medication: null,
