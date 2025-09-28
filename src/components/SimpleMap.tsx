@@ -43,6 +43,7 @@ export default function SimpleMap({
           return;
         }
 
+        console.log("正在加载地图数据:", url);
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -50,6 +51,7 @@ export default function SimpleMap({
         }
 
         const geoData = await response.json();
+        console.log("地图数据加载成功:", mapName);
         setGeoJson(geoData);
 
         // 注册地图
@@ -93,10 +95,12 @@ export default function SimpleMap({
     if (chartInstance.current && data && isReady) {
       try {
         let option: any;
+        console.log("设置图表选项:", { mapType, geoJson: !!geoJson, dataLength: data.length });
 
         if (geoJson) {
           // 地图显示（全国或省份）
           const mapName = mapType === "china" ? "china" : provinceCode || "";
+          console.log("显示地图:", mapName);
           option = {
             title: {
               text: title || "ENS 诊所分布地图",
@@ -146,6 +150,7 @@ export default function SimpleMap({
           };
         } else {
           // 省份或备用柱状图显示
+          console.log("显示柱状图（地图数据未加载）");
           option = {
             title: {
               text: title || "ENS 诊所分布",
