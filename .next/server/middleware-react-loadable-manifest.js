@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{\"app/health-log/page.tsx -> @/components/EChartsComponent\":{\"id\":\"app/health-log/page.tsx -> @/components/EChartsComponent\",\"files\":[\"static/chunks/_app-pages-browser_src_components_EChartsComponent_tsx.js\"]},\"app/page.tsx -> @/components/SimpleMap\":{\"id\":\"app/page.tsx -> @/components/SimpleMap\",\"files\":[\"static/chunks/_app-pages-browser_src_components_SimpleMap_tsx.js\"]}}"
+self.__REACT_LOADABLE_MANIFEST="{}"
