@@ -11,6 +11,10 @@ function App() {
           <p>基础项目框架</p>
           <nav>
             <Link to="/">首页</Link>
+            <Link to="/map">地图</Link>
+            <Link to="/health-log">健康日志</Link>
+            <Link to="/memorial">纪念园</Link>
+            <Link to="/forum">论坛</Link>
           </nav>
         </header>
       </div>
