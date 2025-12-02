@@ -1,6 +1,8 @@
 // 导入 React 的 useState Hook
 // useState 用于在函数组件中管理状态（数据）
 import { useState } from "react";
+// 导入登录 API 方法
+import { login } from "../services/api";
 
 const LoginPage = () => {
   // ========== 状态管理 ==========
@@ -115,9 +117,27 @@ const LoginPage = () => {
       {/* 第五步：添加登录按钮 */}
       <button
         type="button"
-        onClick={() => {
-          // TODO: 这里后续会添加调用后端 API 的逻辑
-          console.log("点击登录按钮", { username, password });
+        onClick={async () => {
+          // 调用登录 API：调用登录 API
+          try {
+            // 调用 login 函数，传入用户名和密码
+            // await 表示等待异步操作完成
+            const result = await login(username, password);
+
+            // 如果登录成功（result.success === true）
+            if (result.success) {
+              console.log("登录成功！", result.user);
+              // TODO: 后续会添加跳转到首页或保存用户信息的逻辑
+            } else {
+              // 如果登录失败
+              console.log("登录失败：", result.message);
+              // TODO: 后续会添加显示错误提示的逻辑
+            }
+          } catch (error) {
+            // 如果请求出错（比如网络错误、服务器错误等）
+            console.error("登录出错：", error);
+            // TODO: 后续会添加显示错误提示的逻辑
+          }
         }}
         style={{
           width: "300px",
