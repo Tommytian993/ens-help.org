@@ -1,6 +1,4 @@
-import React from "react";
-
-const HealthLogPage: React.FC = () => {
+const HealthLogPage = () => {
   return (
     <div>
       <h2>健康日志</h2>

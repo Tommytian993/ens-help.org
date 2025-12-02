@@ -1,6 +1,4 @@
-import React from "react";
-
-const HomePage: React.FC = () => {
+const HomePage = () => {
   return (
     <div>
       <h2>首页</h2>

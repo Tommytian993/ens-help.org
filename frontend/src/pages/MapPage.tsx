@@ -1,6 +1,4 @@
-import React from "react";
-
-const MapPage: React.FC = () => {
+const MapPage = () => {
   return (
     <div>
       <h2>地图</h2>

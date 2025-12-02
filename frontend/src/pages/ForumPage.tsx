@@ -1,6 +1,4 @@
-import React from "react";
-
-const ForumPage: React.FC = () => {
+const ForumPage = () => {
   return (
     <div>
       <h2>论坛</h2>

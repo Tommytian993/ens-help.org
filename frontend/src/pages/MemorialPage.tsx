@@ -1,6 +1,4 @@
-import React from "react";
-
-const MemorialPage: React.FC = () => {
+const MemorialPage = () => {
   return (
     <div>
       <h2>纪念园</h2>
