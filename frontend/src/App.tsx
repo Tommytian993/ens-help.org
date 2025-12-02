@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
+import { BrowserRouter, NavLink, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import MapPage from "./pages/MapPage";
 import HealthLogPage from "./pages/HealthLogPage";
@@ -15,14 +15,24 @@ function App() {
           <h1>React + Django + PostgreSQL</h1>
           <p>基础项目框架</p>
           <nav>
-            <Link to="/">首页</Link>
-            <Link to="/map">地图</Link>
-            <Link to="/health-log">健康日志</Link>
-            <Link to="/memorial">纪念园</Link>
-            <Link to="/forum">论坛</Link>
+            <NavLink to="/" className="nav-link">
+              首页
+            </NavLink>
+            <NavLink to="/map" className="nav-link">
+              地图
+            </NavLink>
+            <NavLink to="/health-log" className="nav-link">
+              健康日志
+            </NavLink>
+            <NavLink to="/memorial" className="nav-link">
+              纪念园
+            </NavLink>
+            <NavLink to="/forum" className="nav-link">
+              论坛
+            </NavLink>
           </nav>
         </header>
-        <main>
+        <main className="App-main">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/map" element={<MapPage />} />

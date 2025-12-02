@@ -41,6 +41,11 @@ nav {
   color: white;
 }
 
+.nav-link.active {
+  background: #667eea;
+  color: white;
+}
+
 .App-main {
   max-width: 1200px;
   margin: 20px auto;
