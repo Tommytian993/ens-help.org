@@ -112,6 +112,27 @@ const LoginPage = () => {
         />
       </div>
 
+      {/* 第五步：添加登录按钮 */}
+      <button
+        type="button"
+        onClick={() => {
+          // TODO: 这里后续会添加调用后端 API 的逻辑
+          console.log("点击登录按钮", { username, password });
+        }}
+        style={{
+          width: "300px",
+          padding: "10px",
+          backgroundColor: "#667eea",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          fontSize: "16px",
+        }}
+      >
+        登录
+      </button>
+
       {/* 
         显示当前输入的值（用于测试和调试）
         {username || "(空)"} 的含义：
