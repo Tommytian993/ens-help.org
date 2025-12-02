@@ -1,6 +1,10 @@
 import React from "react";
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import MapPage from "./pages/MapPage";
+import HealthLogPage from "./pages/HealthLogPage";
+import MemorialPage from "./pages/MemorialPage";
+import ForumPage from "./pages/ForumPage";
 import "./App.css";
 
 function App() {
@@ -21,6 +25,10 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/map" element={<MapPage />} />
+            <Route path="/health-log" element={<HealthLogPage />} />
+            <Route path="/memorial" element={<MemorialPage />} />
+            <Route path="/forum" element={<ForumPage />} />
           </Routes>
         </main>
       </div>
