@@ -133,13 +133,6 @@ const LoginPage = () => {
         登录
       </button>
 
-      {/* 
-        显示当前输入的值（用于测试和调试）
-        {username || "(空)"} 的含义：
-        - 如果 username 有值，显示 username
-        - 如果 username 是空字符串（falsy），显示 "(空)"
-        - 这样可以看到状态是否正常工作
-      */}
       <p>用户名: {username || "(空)"}</p>
       <p>密码: {password ? "***" : "(空)"}</p>
     </div>
