@@ -1,52 +1,81 @@
-from rest_framework import viewsets, status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.contrib.auth import authenticate
-from api.serializers import LoginSerializer
+# 导入 Django REST Framework 的组件
+from rest_framework import viewsets, status  # status 包含 HTTP 状态码（如 200, 401, 400）
+from rest_framework.views import APIView  # APIView 是处理 API 请求的基础类
+from rest_framework.response import Response  # Response 用于返回 JSON 格式的响应
+from django.contrib.auth import authenticate  # authenticate 是 Django 内置的用户验证函数
+from api.serializers import LoginSerializer  # 导入我们刚才创建的登录序列化器
 
 # Create your views here.
 
 class LoginView(APIView):
     """
-    登录视图
+    登录视图类
     
-    设计思路：
-    - 接收 POST 请求，包含用户名和密码
-    - 使用序列化器验证输入数据
-    - 使用 Django 的 authenticate 验证用户
-    - 如果验证成功，返回用户信息
-    - 如果验证失败，返回错误信息
+    这个类的作用：
+    1. 接收前端发送的用户名和密码
+    2. 验证这些数据是否正确
+    3. 检查用户是否存在，密码是否匹配
+    4. 返回登录结果（成功或失败）
+    
+    为什么继承 APIView？
+    - APIView 提供了处理 HTTP 请求的基础功能
+    - 我们可以定义 post() 方法来处理 POST 请求
     """
     
     def post(self, request):
+        """
+        处理 POST 请求的方法
+        
+        参数：
+        - self: 类实例本身（Python 必需）
+        - request: 包含前端发送的所有数据（用户名、密码等）
+        
+        流程：
+        1. 验证输入数据格式
+        2. 检查用户名和密码是否正确
+        3. 返回结果
+        """
+        
+        # 第一步：验证输入数据
+        # LoginSerializer 会检查 request.data 中是否有 username 和 password
+        # 如果没有或格式不对，会记录错误
         serializer = LoginSerializer(data=request.data)
+        
+        # 第二步：检查数据是否通过验证
         if serializer.is_valid():
-            username = serializer.validated_data['username']
-            password = serializer.validated_data['password']
+            # 如果数据格式正确，提取用户名和密码
+            username = serializer.validated_data['username']  # 从验证后的数据中获取用户名
+            password = serializer.validated_data['password']  # 从验证后的数据中获取密码
             
-            # 验证用户
+            # 第三步：验证用户身份
+            # authenticate() 是 Django 内置函数，会去数据库查找用户
+            # 如果用户名和密码都正确，返回用户对象；否则返回 None
             user = authenticate(username=username, password=password)
             
+            # 第四步：根据验证结果返回响应
             if user:
-                # 登录成功，返回用户信息
+                # 情况1：用户验证成功（user 不是 None）
+                # 返回成功信息和用户数据
                 return Response({
-                    'success': True,
-                    'user': {
-                        'id': user.id,
-                        'username': user.username,
-                        'email': user.email,
+                    'success': True,  # 标记登录成功
+                    'user': {  # 返回用户信息（不包含密码）
+                        'id': user.id,  # 用户ID
+                        'username': user.username,  # 用户名
+                        'email': user.email,  # 邮箱
                     }
-                }, status=status.HTTP_200_OK)
+                }, status=status.HTTP_200_OK)  # HTTP 200 表示请求成功
             else:
-                # 登录失败
+                # 情况2：用户验证失败（user 是 None，用户名或密码错误）
+                # 返回失败信息
                 return Response({
-                    'success': False,
-                    'message': '用户名或密码错误'
-                }, status=status.HTTP_401_UNAUTHORIZED)
+                    'success': False,  # 标记登录失败
+                    'message': '用户名或密码错误'  # 错误提示
+                }, status=status.HTTP_401_UNAUTHORIZED)  # HTTP 401 表示未授权（认证失败）
         
-        # 数据验证失败
+        # 情况3：输入数据格式不正确（比如缺少用户名或密码）
+        # 返回数据验证错误
         return Response({
-            'success': False,
-            'message': '请提供用户名和密码',
-            'errors': serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
+            'success': False,  # 标记失败
+            'message': '请提供用户名和密码',  # 提示信息
+            'errors': serializer.errors  # 详细的错误信息（比如哪个字段有问题）
+        }, status=status.HTTP_400_BAD_REQUEST)  # HTTP 400 表示请求格式错误
