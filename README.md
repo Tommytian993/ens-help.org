@@ -65,10 +65,15 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 # 安装依赖
 pip install -r requirements.txt
 
-# 创建 .env 文件
+# 创建 .env 文件（复制下面的模板，替换为你的实际配置）
+# 注意：.env 文件包含敏感信息，不要提交到 Git！
 cat > .env << EOF
+# Django Settings
+# 生成密钥: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 SECRET_KEY=your-secret-key-here
 DEBUG=True
+
+# Database Settings
 DB_NAME=ens_platform
 DB_USER=your-username
 DB_PASSWORD=your-password
@@ -140,6 +145,16 @@ python manage.py runserver
 cd frontend
 npm start
 ```
+
+## 安全注意事项
+
+⚠️ **重要：保护你的敏感信息**
+
+- `.env` 文件包含敏感信息（数据库密码、密钥等），**不要提交到 Git**
+- `.env` 文件已在 `.gitignore` 中，确保不会被意外提交
+- 生产环境必须设置 `DEBUG=False`
+- 使用强密码和 HTTPS
+- 定期更新依赖包
 
 ## 部署
 
