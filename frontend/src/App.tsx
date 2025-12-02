@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter, Link } from "react-router-dom";
+import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 import "./App.css";
 
 function App() {
@@ -17,6 +18,11 @@ function App() {
             <Link to="/forum">论坛</Link>
           </nav>
         </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </main>
       </div>
     </BrowserRouter>
   );
