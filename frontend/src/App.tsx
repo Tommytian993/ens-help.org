@@ -5,6 +5,7 @@ import MapPage from "./pages/MapPage";
 import HealthLogPage from "./pages/HealthLogPage";
 import MemorialPage from "./pages/MemorialPage";
 import ForumPage from "./pages/ForumPage";
+import LoginPage from "./pages/LoginPage";
 import "./App.css";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <main className="App-main">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/health-log" element={<HealthLogPage />} />
             <Route path="/memorial" element={<MemorialPage />} />
