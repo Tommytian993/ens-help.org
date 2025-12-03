@@ -1,4 +1,6 @@
 import { useState } from "react";
+// 导入注册 API 方法
+import { register } from "../services/api";
 
 const RegisterPage = () => {
   // 添加状态管理
@@ -58,9 +60,27 @@ const RegisterPage = () => {
       {/* 添加注册按钮 */}
       <button
         type="button"
-        onClick={() => {
-          // TODO: 这里后续会添加调用后端 API 的逻辑
-          console.log("点击注册按钮", { username, password });
+        onClick={async () => {
+          // 第六步：调用注册 API
+          try {
+            // 调用 register 函数，传入用户名和密码
+            // await 表示等待异步操作完成
+            const result = await register(username, password);
+
+            // 如果注册成功（result.success === true）
+            if (result.success) {
+              console.log("注册成功！", result.user);
+              // TODO: 后续会添加跳转到登录页面或保存用户信息的逻辑
+            } else {
+              // 如果注册失败
+              console.log("注册失败：", result.message);
+              // TODO: 后续会添加显示错误提示的逻辑
+            }
+          } catch (error: any) {
+            // 如果请求出错（比如网络错误、服务器错误等）
+            console.error("注册出错：", error);
+            // TODO: 后续会添加显示错误提示的逻辑
+          }
         }}
         style={{
           width: "300px",
