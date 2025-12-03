@@ -23,6 +23,10 @@ const LoginPage = () => {
   // 初始值也是空字符串
   const [password, setPassword] = useState("");
 
+  // 添加错误状态管理
+  // errorMessage: 存储错误信息（比如"用户名或密码错误"）
+  // 初始值为 null（表示没有错误）
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   // ========== 渲染页面 ==========
   // return 后面是 JSX（类似 HTML，但可以写 JavaScript）
   return (
@@ -118,7 +122,10 @@ const LoginPage = () => {
       <button
         type="button"
         onClick={async () => {
-          // 调用登录 API：调用登录 API
+          // 调用登录 API
+          // 先清除之前的错误信息
+          setErrorMessage(null);
+
           try {
             // 调用 login 函数，传入用户名和密码
             // await 表示等待异步操作完成
@@ -127,16 +134,19 @@ const LoginPage = () => {
             // 如果登录成功（result.success === true）
             if (result.success) {
               console.log("登录成功！", result.user);
+              // 清除错误信息
+              setErrorMessage(null);
               // TODO: 后续会添加跳转到首页或保存用户信息的逻辑
             } else {
-              // 如果登录失败
-              console.log("登录失败：", result.message);
-              // TODO: 后续会添加显示错误提示的逻辑
+              // 如果登录失败，设置错误信息
+              setErrorMessage(result.message || "登录失败，请重试");
             }
-          } catch (error) {
+          } catch (error: any) {
             // 如果请求出错（比如网络错误、服务器错误等）
-            console.error("登录出错：", error);
-            // TODO: 后续会添加显示错误提示的逻辑
+            // 设置错误信息
+            setErrorMessage(
+              error.response?.data?.message || "网络错误，请稍后重试"
+            );
           }
         }}
         style={{
@@ -152,6 +162,23 @@ const LoginPage = () => {
       >
         登录
       </button>
+
+      {/* 第八步：显示错误信息 */}
+      {/* 如果 errorMessage 不为空，显示错误提示 */}
+      {errorMessage && (
+        <div
+          style={{
+            marginTop: "15px",
+            padding: "10px",
+            backgroundColor: "#fee",
+            color: "#c33",
+            border: "1px solid #fcc",
+            borderRadius: "4px",
+          }}
+        >
+          {errorMessage}
+        </div>
+      )}
 
       <p>用户名: {username || "(空)"}</p>
       <p>密码: {password ? "***" : "(空)"}</p>
