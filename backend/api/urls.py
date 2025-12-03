@@ -13,4 +13,9 @@ urlpatterns = [
     # 当用户访问 POST /api/auth/login/ 时，会调用 LoginView 的 post 方法
     # 例如：前端发送 POST 请求到 http://localhost:8000/api/auth/login/
     path("api/auth/login/", views.LoginView.as_view(), name="login"),
+    
+    # 注册路由
+    # 当用户访问 POST /api/auth/register/ 时，会调用 RegisterView 的 post 方法
+    # 例如：前端发送 POST 请求到 http://localhost:8000/api/auth/register/
+    path("api/auth/register/", views.RegisterView.as_view(), name="register"),
 ]
