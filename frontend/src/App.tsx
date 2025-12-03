@@ -32,6 +32,12 @@ function App() {
             <NavLink to="/forum" className="nav-link">
               论坛
             </NavLink>
+            <NavLink to="/login" className="nav-link">
+              登录
+            </NavLink>
+            <NavLink to="/register" className="nav-link">
+              注册
+            </NavLink>
           </nav>
         </header>
         <main className="App-main">
