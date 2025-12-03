@@ -6,6 +6,7 @@ import HealthLogPage from "./pages/HealthLogPage";
 import MemorialPage from "./pages/MemorialPage";
 import ForumPage from "./pages/ForumPage";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import "./App.css";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/health-log" element={<HealthLogPage />} />
             <Route path="/memorial" element={<MemorialPage />} />
