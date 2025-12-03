@@ -1,10 +1,18 @@
 // 导入 React 的 useState Hook
 // useState 用于在函数组件中管理状态（数据）
 import { useState } from "react";
+// 导入 React Router 的 useNavigate Hook
+// useNavigate 用于在代码中实现页面跳转
+import { useNavigate } from "react-router-dom";
 // 导入登录 API 方法
 import { login } from "../services/api";
 
 const LoginPage = () => {
+  // 第十步：添加页面跳转功能
+  // useNavigate 返回一个函数，用于跳转到其他页面
+  // navigate('/') 会跳转到首页
+  const navigate = useNavigate();
+
   // ========== 状态管理 ==========
   // useState 是 React 提供的 Hook（钩子函数）
   // 作用：让函数组件能够"记住"数据，当数据改变时自动更新页面
@@ -144,7 +152,8 @@ const LoginPage = () => {
               console.log("登录成功！", result.user);
               // 清除错误信息
               setErrorMessage(null);
-              // TODO: 后续会添加跳转到首页或保存用户信息的逻辑
+              // 跳转到首页
+              navigate("/");
             } else {
               // 如果登录失败，设置错误信息
               setErrorMessage(result.message || "登录失败，请重试");
