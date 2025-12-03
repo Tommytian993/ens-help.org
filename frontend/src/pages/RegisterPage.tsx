@@ -12,6 +12,11 @@ const RegisterPage = () => {
   // errorMessage: 存储错误信息（比如"用户名已存在"）
   // 初始值为 null（表示没有错误）
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // 第八步：添加加载状态管理
+  // isLoading: 表示是否正在注册中
+  // true = 正在注册（显示"注册中..."）
+  // false = 未在注册（显示"注册"按钮）
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div>
@@ -68,6 +73,8 @@ const RegisterPage = () => {
           // 调用注册 API
           // 先清除之前的错误信息
           setErrorMessage(null);
+          // 设置加载状态为 true（开始加载）
+          setIsLoading(true);
 
           try {
             // 调用 register 函数，传入用户名和密码
@@ -90,6 +97,9 @@ const RegisterPage = () => {
             setErrorMessage(
               error.response?.data?.message || "网络错误，请稍后重试"
             );
+          } finally {
+            // 无论成功还是失败，都要设置加载状态为 false（结束加载）
+            setIsLoading(false);
           }
         }}
         style={{
@@ -99,11 +109,13 @@ const RegisterPage = () => {
           color: "white",
           border: "none",
           borderRadius: "4px",
-          cursor: "pointer",
+          cursor: isLoading ? "not-allowed" : "pointer",
           fontSize: "16px",
+          opacity: isLoading ? 0.6 : 1,
         }}
+        disabled={isLoading}
       >
-        注册
+        {isLoading ? "注册中..." : "注册"}
       </button>
 
       {/* 第七步：显示错误信息 */}
