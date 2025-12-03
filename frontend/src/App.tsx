@@ -14,8 +14,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <header className="App-header">
-          <h1>React + Django + PostgreSQL</h1>
-          <p>基础项目框架</p>
+          <h1>ENS患者平台</h1>
           <nav>
             <NavLink to="/" className="nav-link">
               首页
