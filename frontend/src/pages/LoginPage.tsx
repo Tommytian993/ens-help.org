@@ -27,6 +27,12 @@ const LoginPage = () => {
   // errorMessage: 存储错误信息（比如"用户名或密码错误"）
   // 初始值为 null（表示没有错误）
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // 添加加载状态管理
+  // isLoading: 表示是否正在登录中
+  // true = 正在登录（显示"登录中..."）
+  // false = 未在登录（显示"登录"按钮）
+  const [isLoading, setIsLoading] = useState(false);
   // ========== 渲染页面 ==========
   // return 后面是 JSX（类似 HTML，但可以写 JavaScript）
   return (
@@ -125,6 +131,8 @@ const LoginPage = () => {
           // 调用登录 API
           // 先清除之前的错误信息
           setErrorMessage(null);
+          // 设置加载状态为 true（开始加载）
+          setIsLoading(true);
 
           try {
             // 调用 login 函数，传入用户名和密码
@@ -147,6 +155,9 @@ const LoginPage = () => {
             setErrorMessage(
               error.response?.data?.message || "网络错误，请稍后重试"
             );
+          } finally {
+            // 无论成功还是失败，都要设置加载状态为 false（结束加载）
+            setIsLoading(false);
           }
         }}
         style={{
@@ -156,11 +167,13 @@ const LoginPage = () => {
           color: "white",
           border: "none",
           borderRadius: "4px",
-          cursor: "pointer",
+          cursor: isLoading ? "not-allowed" : "pointer",
           fontSize: "16px",
+          opacity: isLoading ? 0.6 : 1,
         }}
+        disabled={isLoading}
       >
-        登录
+        {isLoading ? "登录中..." : "登录"}
       </button>
 
       {/* 第八步：显示错误信息 */}
