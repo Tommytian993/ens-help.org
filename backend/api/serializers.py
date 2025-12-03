@@ -12,3 +12,17 @@ class LoginSerializer(serializers.Serializer):
     """
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True, write_only=True)
+
+
+class RegisterSerializer(serializers.Serializer):
+    """
+    注册序列化器
+    
+    设计思路：
+    - username: 用户名（必填）
+    - password: 密码（必填，write_only=True 表示只用于输入，不会在响应中返回）
+    - email: 邮箱（可选）
+    """
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
+    email = serializers.EmailField(required=False, allow_blank=True)
