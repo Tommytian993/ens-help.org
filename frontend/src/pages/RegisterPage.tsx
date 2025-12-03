@@ -1,8 +1,15 @@
 import { useState } from "react";
+// 导入 React Router 的 useNavigate Hook 和 Link 组件
+import { useNavigate, Link } from "react-router-dom";
 // 导入注册 API 方法
 import { register } from "../services/api";
 
 const RegisterPage = () => {
+  // 第九步：添加页面跳转功能
+  // useNavigate 返回一个函数，用于跳转到其他页面
+  // navigate('/login') 会跳转到登录页面
+  const navigate = useNavigate();
+
   // 添加状态管理
   // username: 存储用户输入的用户名
   const [username, setUsername] = useState("");
@@ -19,11 +26,22 @@ const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div>
-      <h2>注册</h2>
+    <div
+      style={{
+        maxWidth: "400px",
+        margin: "40px auto",
+        padding: "30px",
+        backgroundColor: "#fff",
+        borderRadius: "8px",
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <h2 style={{ textAlign: "center", marginBottom: "30px", color: "#333" }}>
+        注册账号
+      </h2>
 
       {/* 添加用户名输入框 */}
-      <div style={{ marginBottom: "15px" }}>
+      <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="username"
           style={{ display: "block", marginBottom: "5px" }}
@@ -36,16 +54,18 @@ const RegisterPage = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           style={{
-            width: "300px",
-            padding: "8px",
+            width: "100%",
+            padding: "10px",
             border: "1px solid #ddd",
             borderRadius: "4px",
+            fontSize: "14px",
+            boxSizing: "border-box",
           }}
         />
       </div>
 
       {/* 添加密码输入框 */}
-      <div style={{ marginBottom: "15px" }}>
+      <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="password"
           style={{ display: "block", marginBottom: "5px" }}
@@ -58,10 +78,12 @@ const RegisterPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={{
-            width: "300px",
-            padding: "8px",
+            width: "100%",
+            padding: "10px",
             border: "1px solid #ddd",
             borderRadius: "4px",
+            fontSize: "14px",
+            boxSizing: "border-box",
           }}
         />
       </div>
@@ -86,7 +108,8 @@ const RegisterPage = () => {
               console.log("注册成功！", result.user);
               // 清除错误信息
               setErrorMessage(null);
-              // TODO: 后续会添加跳转到登录页面或保存用户信息的逻辑
+              // 跳转到登录页面
+              navigate("/login");
             } else {
               // 如果注册失败，设置错误信息
               setErrorMessage(result.message || "注册失败，请重试");
@@ -103,40 +126,65 @@ const RegisterPage = () => {
           }
         }}
         style={{
-          width: "300px",
-          padding: "10px",
+          width: "100%",
+          padding: "12px",
           backgroundColor: "#667eea",
           color: "white",
           border: "none",
           borderRadius: "4px",
           cursor: isLoading ? "not-allowed" : "pointer",
           fontSize: "16px",
+          fontWeight: "500",
           opacity: isLoading ? 0.6 : 1,
+          transition: "background-color 0.2s",
         }}
         disabled={isLoading}
+        onMouseEnter={(e) => {
+          if (!isLoading) {
+            e.currentTarget.style.backgroundColor = "#5568d3";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!isLoading) {
+            e.currentTarget.style.backgroundColor = "#667eea";
+          }
+        }}
       >
         {isLoading ? "注册中..." : "注册"}
       </button>
 
-      {/* 第七步：显示错误信息 */}
-      {/* 如果 errorMessage 不为空，显示错误提示 */}
+      {/* 显示错误信息 */}
       {errorMessage && (
         <div
           style={{
             marginTop: "15px",
-            padding: "10px",
+            padding: "12px",
             backgroundColor: "#fee",
             color: "#c33",
             border: "1px solid #fcc",
             borderRadius: "4px",
+            fontSize: "14px",
           }}
         >
           {errorMessage}
         </div>
       )}
 
-      <p>用户名: {username || "(空)"}</p>
-      <p>密码: {password ? "***" : "(空)"}</p>
+      {/* 添加登录链接 */}
+      <div style={{ textAlign: "center", marginTop: "20px", color: "#666" }}>
+        <span>已有账号？</span>
+        <Link
+          to="/login"
+          style={{
+            color: "#667eea",
+            textDecoration: "none",
+            marginLeft: "5px",
+            fontWeight: "500",
+          }}
+        >
+          去登录
+        </Link>
+      </div>
     </div>
   );
 };
