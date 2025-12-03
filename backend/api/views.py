@@ -5,6 +5,7 @@ from rest_framework.response import Response  # Response 用于返回 JSON 格�
 from django.contrib.auth import authenticate  # authenticate 是 Django 内置的用户验证函数
 from django.contrib.auth.models import User  # User 是 Django 内置的用户模型
 from api.serializers import LoginSerializer, RegisterSerializer  # 导入登录和注册序列化器
+from api.models import UserProfile  # 导入用户扩展信息模型
 
 # Create your views here.
 
@@ -56,14 +57,30 @@ class LoginView(APIView):
             # 第四步：根据验证结果返回响应
             if user:
                 # 情况1：用户验证成功（user 不是 None）
+                # 获取用户的扩展信息（Profile），如果不存在则为 None
+                # 使用 getattr 和 hasattr 安全地获取 profile，避免报错
+                profile = None
+                if hasattr(user, 'profile'):
+                    profile = user.profile
+                
+                # 构建用户信息字典
+                user_data = {
+                    'id': user.id,  # 用户ID
+                    'username': user.username,  # 用户名
+                    'email': user.email,  # 邮箱
+                }
+                
+                # 如果有 Profile，添加 Profile 的创建时间等信息
+                if profile:
+                    user_data['profile'] = {
+                        'created_at': profile.created_at.isoformat() if profile.created_at else None,
+                        'updated_at': profile.updated_at.isoformat() if profile.updated_at else None,
+                    }
+                
                 # 返回成功信息和用户数据
                 return Response({
                     'success': True,  # 标记登录成功
-                    'user': {  # 返回用户信息（不包含密码）
-                        'id': user.id,  # 用户ID
-                        'username': user.username,  # 用户名
-                        'email': user.email,  # 邮箱
-                    }
+                    'user': user_data  # 返回用户信息（包含 Profile 信息）
                 }, status=status.HTTP_200_OK)  # HTTP 200 表示请求成功
             else:
                 # 情况2：用户验证失败（user 是 None，用户名或密码错误）
@@ -137,7 +154,12 @@ class RegisterView(APIView):
                 email=email if email else '',  # 如果提供了邮箱就使用，否则为空字符串
             )
             
-            # 第五步：返回成功信息
+            # 第五步：自动创建用户的扩展信息（UserProfile）
+            # 使用 get_or_create 确保每个用户都有一个 Profile
+            # 如果 Profile 已存在就获取，不存在就创建
+            profile, created = UserProfile.objects.get_or_create(user=user)
+            
+            # 第六步：返回成功信息
             return Response({
                 'success': True,
                 'message': '注册成功',
@@ -145,6 +167,10 @@ class RegisterView(APIView):
                     'id': user.id,
                     'username': user.username,
                     'email': user.email,
+                    'profile': {
+                        'created_at': profile.created_at.isoformat() if profile.created_at else None,
+                        'updated_at': profile.updated_at.isoformat() if profile.updated_at else None,
+                    }
                 }
             }, status=status.HTTP_201_CREATED)  # HTTP 201 表示资源创建成功
         
