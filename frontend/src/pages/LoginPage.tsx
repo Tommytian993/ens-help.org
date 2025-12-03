@@ -152,6 +152,12 @@ const LoginPage = () => {
               console.log("登录成功！", result.user);
               // 清除错误信息
               setErrorMessage(null);
+
+              // 第十一步：保存用户登录状态
+              // localStorage 是浏览器提供的存储，数据会持久保存（即使关闭浏览器）
+              // 将用户信息转换为 JSON 字符串后存储
+              localStorage.setItem("user", JSON.stringify(result.user));
+
               // 跳转到首页
               navigate("/");
             } else {
