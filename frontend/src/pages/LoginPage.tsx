@@ -158,6 +158,10 @@ const LoginPage = () => {
               // 将用户信息转换为 JSON 字符串后存储
               localStorage.setItem("user", JSON.stringify(result.user));
 
+              // 触发自定义事件，通知导航栏更新登录状态
+              // 这样导航栏会立即显示"个人中心"和"登出"按钮
+              window.dispatchEvent(new Event("loginStatusChanged"));
+
               // 跳转到首页
               navigate("/");
             } else {

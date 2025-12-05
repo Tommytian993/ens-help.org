@@ -70,11 +70,23 @@ class LoginView(APIView):
                     'email': user.email,  # 邮箱
                 }
                 
-                # 如果有 Profile，添加 Profile 的创建时间等信息
+                # 如果有 Profile，添加 Profile 的完整信息（包括角色、认证状态等）
                 if profile:
                     user_data['profile'] = {
+                        'role': profile.role,  # 用户角色（患者/认证医生/管理员）
+                        'role_display': profile.get_role_display(),  # 角色的中文显示名称
+                        'verification_status': profile.verification_status,  # 认证状态（未认证/待审核/已认证）
+                        'verification_status_display': profile.get_verification_status_display(),  # 认证状态的中文显示名称
                         'created_at': profile.created_at.isoformat() if profile.created_at else None,
                         'updated_at': profile.updated_at.isoformat() if profile.updated_at else None,
+                    }
+                else:
+                    # 如果没有 Profile，设置默认值
+                    user_data['profile'] = {
+                        'role': 'patient',
+                        'role_display': '患者',
+                        'verification_status': 'unverified',
+                        'verification_status_display': '未认证',
                     }
                 
                 # 返回成功信息和用户数据
