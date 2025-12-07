@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter,
-  NavLink,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import MapPage from "./pages/MapPage";
-import HealthLogPage from "./pages/HealthLogPage";
-import MemorialPage from "./pages/MemorialPage";
-import ForumPage from "./pages/ForumPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import UserProfilePage from "./pages/UserProfilePage";
+import HealthLogPage from "./pages/HealthLog";
+import MemorialPage from "./pages/Memorial";
+import ForumPage from "./pages/Forum";
+import ResourceCenterPage from "./pages/ResourceCenter";
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
+import UserProfilePage from "./pages/UserProfile";
+import NavLinkItem from "./components/common/NavLinkItem";
 
 // 导航栏组件（需要访问登录状态和登出功能）
 function Navigation() {
@@ -64,39 +60,23 @@ function Navigation() {
   };
 
   return (
-    <nav>
-      <NavLink to="/" className="nav-link">
-        首页
-      </NavLink>
-      <NavLink to="/map" className="nav-link">
-        地图
-      </NavLink>
-      <NavLink to="/health-log" className="nav-link">
-        健康日志
-      </NavLink>
-      <NavLink to="/memorial" className="nav-link">
-        纪念园
-      </NavLink>
-      <NavLink to="/forum" className="nav-link">
-        论坛
-      </NavLink>
+    <nav className="d-flex align-items-center gap-2 flex-wrap">
+      <NavLinkItem to="/">首页</NavLinkItem>
+      <NavLinkItem to="/map">地图</NavLinkItem>
+      <NavLinkItem to="/health-log">健康日志</NavLinkItem>
+      <NavLinkItem to="/memorial">纪念园</NavLinkItem>
+      <NavLinkItem to="/forum">论坛</NavLinkItem>
+      <NavLinkItem to="/resources">资料中心</NavLinkItem>
       {/* 根据登录状态显示不同的导航项 */}
       {isLoggedIn ? (
         <>
-          {/* 已登录：显示个人中心和登出 */}
-          <NavLink to="/profile" className="nav-link">
-            个人中心
-          </NavLink>
+          <NavLinkItem to="/profile">个人中心</NavLinkItem>
           <button
             onClick={handleLogout}
-            className="nav-link"
+            className="btn btn-sm rounded-2 px-3 py-2 fw-semibold btn-hover-lift text-white border-0"
             style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "inherit",
-              fontSize: "inherit",
-              padding: "0.5rem 1rem",
+              background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+              boxShadow: "0 2px 10px rgba(240, 147, 251, 0.3)",
             }}
           >
             登出
@@ -104,13 +84,8 @@ function Navigation() {
         </>
       ) : (
         <>
-          {/* 未登录：显示登录和注册 */}
-          <NavLink to="/login" className="nav-link">
-            登录
-          </NavLink>
-          <NavLink to="/register" className="nav-link">
-            注册
-          </NavLink>
+          <NavLinkItem to="/login">登录</NavLinkItem>
+          <NavLinkItem to="/register">注册</NavLinkItem>
         </>
       )}
     </nav>
@@ -121,11 +96,18 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <header className="App-header">
-          <h1>ENS患者平台</h1>
-          <Navigation />
+        <header
+          className="bg-white shadow-sm sticky-top py-3"
+          style={{ zIndex: 1000 }}
+        >
+          <div className="container-fluid">
+            <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
+              <h1 className="h4 mb-0 text-gradient fw-bold">🏥 ENS患者平台</h1>
+              <Navigation />
+            </div>
+          </div>
         </header>
-        <main className="App-main">
+        <main className="min-vh-100">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -135,6 +117,7 @@ function App() {
             <Route path="/health-log" element={<HealthLogPage />} />
             <Route path="/memorial" element={<MemorialPage />} />
             <Route path="/forum" element={<ForumPage />} />
+            <Route path="/resources" element={<ResourceCenterPage />} />
           </Routes>
         </main>
       </div>
